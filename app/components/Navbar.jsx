@@ -6,7 +6,8 @@ import { motion } from 'framer-motion';
 import { HiMenuAlt3, HiX, HiOutlineDocumentDownload } from 'react-icons/hi';
 import useSectionObserver from '../hooks/useSectionObserver';
 
-const navLinks = ['Home', 'Skills', 'Experience'];
+// ✅ Add 'Projects' to nav
+const navLinks = ['Home', 'Skills', 'Experience', 'Projects'];
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -14,9 +15,9 @@ const Navbar = () => {
 
   const sectionIds = navLinks.map((link) => link.toLowerCase());
   const activeSection = useSectionObserver(sectionIds);
-  
-console.log("🔥 Active section:", activeSection);
 
+  // 🔍 Debug active section (optional)
+  // console.log("🔥 Active section:", activeSection);
 
   // Scroll background effect
   useEffect(() => {
@@ -24,24 +25,21 @@ console.log("🔥 Active section:", activeSection);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-useEffect(() => {
-  const handleResize = () => {
-    if (window.innerWidth >= 768) {
-      setIsOpen(false); // Close mobile menu on desktop
-    }
-  };
 
-  window.addEventListener('resize', handleResize);
-  return () => window.removeEventListener('resize', handleResize);
-}, []);
-
-  // Prevent background scroll on mobile menu open
+  // Auto-close mobile menu on resize
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : 'auto';
   }, [isOpen]);
 
   return (
@@ -64,29 +62,29 @@ useEffect(() => {
           </motion.span>
         </Link>
 
-        {/* 🌐 Desktop Nav Links */}
+        {/* 🌐 Desktop Nav */}
         <div className="hidden md:flex items-center space-x-6">
           {navLinks.map((link) => {
-  const id = link.toLowerCase();
-  const isActive = activeSection === id;
+            const id = link.toLowerCase();
+            const isActive = activeSection === id;
 
-  return (
-    <Link
-      key={id}
-      href={`#${id}`}
-      className={`group relative font-medium transition-colors duration-200 ${
-        isActive ? 'text-[#a78bfa]' : 'text-white'
-      }`}
-    >
-      {link}
-      <span
-        className={`absolute left-0 -bottom-1 h-[2px] bg-[#a78bfa] rounded-full transition-all duration-300 ${
-          isActive ? 'w-full' : 'w-0 group-hover:w-full'
-        }`}
-      />
-    </Link>
-  );
-})}
+            return (
+              <Link
+                key={id}
+                href={`#${id}`}
+                className={`group relative font-medium transition-colors duration-200 ${
+                  isActive ? 'text-[#a78bfa]' : 'text-white'
+                }`}
+              >
+                {link}
+                <span
+                  className={`absolute left-0 -bottom-1 h-[2px] bg-[#a78bfa] rounded-full transition-all duration-300 ${
+                    isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                  }`}
+                />
+              </Link>
+            );
+          })}
 
           {/* 📄 Resume Button */}
           <a

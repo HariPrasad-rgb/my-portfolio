@@ -1,16 +1,15 @@
 import Hero from './components/Hero';
 import Skills from './components/Skills';
 import Experience from './components/Experience';
-// Add other sections as you build them
+import Projects from './components/Projects'; // ✅ Add this
 
 export default function Home() {
   return (
     <>
-   <Hero />         
+      <Hero />
       <Skills />
       <Experience />
-
-      {/* Future: Projects, Experience, Contact sections */}
+      <Projects /> {/* ✅ Render Projects Section */}
     </>
   );
 }
